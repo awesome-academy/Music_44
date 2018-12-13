@@ -1,15 +1,23 @@
 package com.framgia.music_44.data.source;
 
-import com.framgia.music_44.data.source.local.SongLocal;
+import com.framgia.music_44.data.source.local.OnResultDataListener;
 
 public class SongsRepository {
-    private SongDataSource.LocalDataSource mLocalDataSource;
+    private static SongsRepository sInstance;
+    private SongDataSource.Local mLocalDataSource;
 
-    public SongsRepository(SongDataSource.LocalDataSource localDataSource) {
+    private SongsRepository(SongDataSource.Local localDataSource) {
         mLocalDataSource = localDataSource;
     }
 
-    public void getData(SongLocal songLocal) {
-        mLocalDataSource.getData(songLocal);
+    public static SongsRepository getsInstance(SongDataSource.Local localDataSource) {
+        if (sInstance == null) {
+            sInstance = new SongsRepository(localDataSource);
+        }
+        return sInstance;
+    }
+
+    public void getData(OnResultDataListener songLocal) {
+        mLocalDataSource.getSongsLocal(songLocal);
     }
 }

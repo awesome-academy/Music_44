@@ -5,10 +5,10 @@ import java.util.List;
 
 public interface HomeContract {
     interface View {
-        void getDataSuccess(List<Songs> songsList);
+        void onGetSongsSuccess(List<Songs> songsList);
     }
 
     interface Presenter {
-        void getSongs();
+        void getSongsLocal();
     }
 }

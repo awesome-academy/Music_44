@@ -6,27 +6,32 @@ import android.content.Context;
 import android.database.Cursor;
 import android.net.Uri;
 import android.provider.MediaStore;
-import android.util.Log;
 import com.framgia.music_44.data.model.Songs;
 import com.framgia.music_44.data.source.SongDataSource;
 import java.util.ArrayList;
 import java.util.List;
 
-import static android.support.constraint.Constraints.TAG;
-
-public class SongLocalDataSource implements SongDataSource.LocalDataSource {
+public class SongLocalDataSource implements SongDataSource.Local {
+    private static SongLocalDataSource sInstance;
     private Context mContext;
 
-    public SongLocalDataSource(Context context) {
+    private SongLocalDataSource(Context context) {
         mContext = context;
     }
 
+    public static SongLocalDataSource getInstance(Context context) {
+        if (sInstance == null) {
+            sInstance = new SongLocalDataSource(context);
+        }
+        return sInstance;
+    }
+
     @Override
-    public void getData(SongLocal songLocal) {
+    public void getSongsLocal(OnResultDataListener songLocal) {
         getSongData(mContext, songLocal);
     }
 
-    public void getSongData(Context context, SongLocal songLocal) {
+    public void getSongData(Context context, OnResultDataListener songLocal) {
         List<Songs> songsList = new ArrayList<>();
         ContentResolver musicResolver = context.getContentResolver();
         Uri URI = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
@@ -50,10 +55,10 @@ public class SongLocalDataSource implements SongDataSource.LocalDataSource {
                 songsList.add(
                         new Songs(currenNameSong, currenNameArtist, currenImage, currenDuration,
                                 currenUri, currenId));
-
             } while (cursor.moveToNext());
+            cursor.close();
         }
-        cursor.close();
+
         songLocal.onSuccess(songsList);
     }
 }

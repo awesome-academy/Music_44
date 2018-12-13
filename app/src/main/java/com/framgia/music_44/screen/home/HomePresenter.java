@@ -2,11 +2,11 @@ package com.framgia.music_44.screen.home;
 
 import com.framgia.music_44.data.model.Songs;
 import com.framgia.music_44.data.source.SongsRepository;
-import com.framgia.music_44.data.source.local.SongLocal;
+import com.framgia.music_44.data.source.local.OnResultDataListener;
 import java.util.List;
 
 public class HomePresenter implements HomeContract.Presenter {
-    HomeContract.View mView;
+    private HomeContract.View mView;
     private SongsRepository mSongsRepository;
 
     public HomePresenter(SongsRepository songsRepository, HomeContract.View view) {
@@ -15,11 +15,11 @@ public class HomePresenter implements HomeContract.Presenter {
     }
 
     @Override
-    public void getSongs() {
-        mSongsRepository.getData(new SongLocal() {
+    public void getSongsLocal() {
+        mSongsRepository.getData(new OnResultDataListener() {
             @Override
             public void onSuccess(List<Songs> data) {
-                mView.getDataSuccess(data);
+                mView.onGetSongsSuccess(data);
             }
         });
     }

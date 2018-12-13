@@ -4,17 +4,7 @@ import android.os.Parcel;
 import android.os.Parcelable;
 
 public class Songs implements Parcelable {
-    public static final Creator<Songs> CREATOR = new Creator<Songs>() {
-        @Override
-        public Songs createFromParcel(Parcel in) {
-            return new Songs(in);
-        }
 
-        @Override
-        public Songs[] newArray(int size) {
-            return new Songs[size];
-        }
-    };
     private String mNameSong;
     private String mNameArtist;
     private String mImage;
@@ -79,4 +69,15 @@ public class Songs implements Parcelable {
         dest.writeString(mUri);
         dest.writeString(mId);
     }
+    public static final Creator<Songs> CREATOR = new Creator<Songs>() {
+        @Override
+        public Songs createFromParcel(Parcel in) {
+            return new Songs(in);
+        }
+
+        @Override
+        public Songs[] newArray(int size) {
+            return new Songs[size];
+        }
+    };
 }
